@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+	
+	<project basedir="." default="build" name="PingPong">
+    <property environment="env"/>
+    
+	<property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.7"/>
+    <property name="source" value="1.7"/>
+    
+    <property name="peer" value="./peer_gen" />
+    <property name="conn" value="./connect_gen" />
+    <property name="dyna" value="./dyna" />
+
+    <property name="n_peer" value="20" />
+    <property name="t_conn" value="0.5" />
+    
+    
+    <path id="PingPong.classpath">
+        <pathelement location="bin"/>
+    </path>
+    
+    <target name="javadoc">
+        <javadoc destdir="doc/"
+           packagenames="it.ncorti.pingpong.*"
+           sourcepath="src"
+           defaultexcludes="yes"
+           author="true"
+           version="true"
+           use="true">
+           <classpath refid="PingPong.classpath"/>
+        </javadoc>
+    </target>
+    
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+    
+    <target depends="init" name="build">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src"/>
+            <classpath refid="PingPong.classpath"/>
+        </javac>
+    </target>
+    
+    <target name="jar" depends="build">
+        <jar destfile="pingpong.jar">
+   		<fileset dir="bin"/>
+    	
+    	<manifest>
+      		<attribute name="Main-Class" value="it.ncorti.pingpong.Main"/>
+    	</manifest>
+  		</jar>
+    </target>
+    
+    <target name="Simple" depends="build">
+        <java classname="it.ncorti.pingpong.Main" failonerror="true" fork="yes">
+                        
+            <arg value="simple"/>
+            <arg value="${peer}"/>
+            <arg value="${conn}"/>
+            <arg value="${dyna}"/>
+            
+            <classpath refid="PingPong.classpath"/>
+        </java>
+    </target>
+    
+   	<target name="Cache" depends="build">
+        <java classname="it.ncorti.pingpong.Main" failonerror="true" fork="yes">
+                        
+            <arg value="cache"/>
+            <arg value="${peer}"/>
+            <arg value="${conn}"/>
+            <arg value="${dyna}"/>
+            
+            <classpath refid="PingPong.classpath"/>
+        </java>
+    </target>
+    
+   	<target name="Refined" depends="build">
+        <java classname="it.ncorti.pingpong.Main" failonerror="true" fork="yes">
+                        
+            <arg value="simple"/>
+            <arg value="${peer}"/>
+            <arg value="${conn}"/>
+            <arg value="${dyna}"/>
+            
+            <classpath refid="PingPong.classpath"/>
+        </java>
+    </target>
+    
+   	<target name="Generate" depends="build">
+        <java classname="it.ncorti.pingpong.GraphGenerator" failonerror="true" fork="yes">
+                        
+            <arg value="${n_peer}"/>
+            <arg value="${t_conn}"/>
+            
+            <classpath refid="PingPong.classpath"/>
+        </java>
+    </target>
+    
+
+</project>
