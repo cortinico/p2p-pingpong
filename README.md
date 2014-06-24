@@ -34,3 +34,40 @@ And then execute with
 ```
 ant <implementation>
 ```
+
+## Network Overlay
+
+You can define the network overlay using the files:
+* **peer_gen** for defining the peer list:
+```
+p1
+p2
+p3
+p4
+...
+```
+* **connect_gen** for defining the connection list:
+```
+p0;p4
+p0;p5
+p0;p9
+p0;p10
+...
+```
+* **dyna** for defining the dynamics:
+```
+n1;p0
+sleep;1
+n2;p3
+sleep;1
+n3;p6
+```
+
+Where ```sleep;x``` means that the execution will wait for x seconds and ```n1;n2``` means that a new node ```n1``` connects to te overlay through ```n2``` (please note that new node does not need to appear in the **peer_gen** file.
+
+### More files
+
+You can use other files for your simulation with the command
+```bash
+ant <mode> -Dpeer="<peerfilename>" -Dconn="<connfilename>" -Ddyna="<dynafilename>"
+```
